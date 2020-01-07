@@ -63,7 +63,7 @@ router.put('/update', checkAuth, (req, res)=>{
                 email: (email != undefined) ? email : userData.email,
                 password: (password != undefined) ? password : userData.password
             }
-            userModel.findAndUpdateById(userData._id, newUserData, (err, data)=>{
+            userModel.findByIdAndUpdate(userData._id, newUserData, (err, data)=>{
                 if(err){
                     res.status(500).json({error: err})
                 } else{
@@ -83,6 +83,7 @@ function checkAuth(req, res, next){
                 res.status(402).json({token : false, error: 'not a valid Token'})
             } else{
                 req.userEmail = decoded.email;
+                next();
             }
         });
     } else{
